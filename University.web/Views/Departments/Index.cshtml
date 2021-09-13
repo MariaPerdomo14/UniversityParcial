@@ -1,0 +1,59 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<University.BL.DTOs.DepartmentDTO>
+
+@{
+    ViewBag.Title = "Index";
+}
+<br />
+<h2>Bienvenido al Departaments</h2>
+<br />
+
+<p>
+    @Html.ActionLink(" New Department ", "Create", "Departments", new { @class = "btn btn-sm btn-warning" })
+</p>
+<br />
+
+<table class="table table-bordered" style="background-color:white">
+    <tr>
+        <th>DepartmentID</th>
+        <th>Name</th>
+        <th>Budget</th>
+        <th>StartDate </th>
+        <th>FullName</th>
+        <th>Options</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepartmentID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Budget)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Instructor.FullName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.DepartmentID }, new { @class = "btn btn-sm btn-success far fa-edit" })
+
+                @Html.ActionLink(" ", "Delete", new { id = item.DepartmentID }, new { @class = "btn btn-sm btn-danger fas fa-trash"})
+            </td>
+        </tr>
+    }
+
+</table>
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+<br />
+
+Total Item Count @Model.TotalItemCount
+@Html.PagedListPager(Model, page => Url.Action("Index", "Departments", new { page, pageSize = ViewBag.PageSize }))

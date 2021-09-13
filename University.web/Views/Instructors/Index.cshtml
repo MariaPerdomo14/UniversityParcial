@@ -1,0 +1,70 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<University.BL.DTOs.InstructorDTO>
+
+@{
+    ViewBag.Title = "Index";
+}
+<br />
+<h2>Bienvenido a instructors</h2>
+<br />
+
+<p>
+    @Html.ActionLink("Create New", "Create", "Instructors", new { @class = "btn btn-sm btn-warning" })
+</p>
+<br />
+<table class="table table-bordered">
+    <tr>
+    <tr>
+        <th>FullName</th>
+        <th>HireDate</th>
+        <th>Options</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HireDate)
+            </td>
+
+            <td>
+                @Html.ActionLink(" ", "Edit", new { id = item.ID }, new { @class = "btn btn-sm btn-info far fa-edit" })
+                @Html.ActionLink(" ", "Delete", new { id = item.ID }, new { @class = "btn btn-sm btn-danger fas fa-trash" })
+                @Html.ActionLink("Department", "Index", "Instructors", new { InstructorId = item.ID }, new { @class = "btn btn-sm btn-success" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+<br />
+
+Total Item Count @Model.TotalItemCount
+@Html.PagedListPager(Model, page => Url.Action("Index", "Instructors", new { page, pageSize = ViewBag.PageSize }))
+
+
+@if (ViewBag.Department != null)
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID Department</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in (List<University.BL.DTOs.DepartmentDTO>)ViewBag.Department)
+            {
+                <tr>
+                    <td>@item.DepartmentID</td>
+                    <td>@item.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

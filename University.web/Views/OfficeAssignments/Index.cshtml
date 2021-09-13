@@ -1,0 +1,44 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<University.BL.DTOs.OfficeAssignmentDTO>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Bienvenido a OfficeAssignments</h2>
+
+<p>
+    @Html.ActionLink("New Office", "Create", "OfficeAssignments", null, new { @class = "btn btn-sm btn-warning" })
+</p>
+<table class="table table-bordered">
+    <tr>
+        <th>FullName</th>
+        <th>Location</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Instructor.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", "OfficeAssignments", new { id = item.InstructorID }, new { @class = "btn btn-sm btn-success far fa-edit" })
+
+                @Html.ActionLink(" ", "Delete", "OfficeAssignments", new { id = item.InstructorID }, new { @class = "btn btn-sm btn-danger fas fa-trash" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+<br />
+
+Total Item Count @Model.TotalItemCount
+@Html.PagedListPager(Model, page => Url.Action("Index", "OfficeAssignments", new { page, pageSize = ViewBag.PageSize }))
+
